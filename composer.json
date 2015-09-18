@@ -1,0 +1,22 @@
+{
+    "name": "javihgil/php-expert-system",
+    "description": "This project implements an Expert System in PHP",
+    "keywords": ["php","expert system","inference engine"],
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Jhg\\ExpertSystem\\": ""
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*",
+        "mockery/mockery": "0.9.*"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "symfony/expression-language": "~2.7"
+    }
+}
