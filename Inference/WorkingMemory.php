@@ -25,11 +25,23 @@ class WorkingMemory
     protected $facts = [];
 
     /**
-     * @param Fact $fact
+     * @param Fact[] $facts
      */
-    public function setFact(Fact $fact)
+    public function setFromFacts($facts)
     {
-        $this->facts[$fact->getName()] = $fact;
+        /** @var Fact $fact */
+        foreach ($facts as $fact) {
+            $this->setFact($fact->getName(), $fact->getValue());
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setFact($name, $value)
+    {
+        $this->facts[$name] = $value;
     }
 
     /**
@@ -55,10 +67,7 @@ class WorkingMemory
      */
     public function setAllFacts($facts)
     {
-        /** @var Fact $fact */
-        foreach ($facts as $fact) {
-            $this->setFact($fact);
-        }
+        $this->facts = $facts;
     }
 
     /**

@@ -75,7 +75,7 @@ class InferenceEngine
     public function run(KnowledgeBase $knowledgeBase)
     {
         $workingMemory = new WorkingMemory();
-        $workingMemory->setAllFacts($knowledgeBase->getFacts());
+        $workingMemory->setFromFacts($knowledgeBase->getFacts());
 
         while (true) {
             // Get the rules that has matching conditions
@@ -93,9 +93,13 @@ class InferenceEngine
                     // there are multiple rules with same priority
                     $selectedRule = $this->conflictResolutionStrategy->selectPreferredRule($matchedRules, $workingMemory);
                 }
-                $this->ruleExecutor->execute($selectedRule, $workingMemory->getAllFacts());
+
+                $newFacts = $this->ruleExecutor->execute($selectedRule, $workingMemory->getAllFacts());
+                $workingMemory->setAllFacts($newFacts);
                 $workingMemory->setExecuted($selectedRule);
             }
         }
+
+        $knowledgeBase->setFactsArray($workingMemory->getAllFacts());
     }
 }

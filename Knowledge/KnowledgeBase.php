@@ -50,7 +50,7 @@ class KnowledgeBase
      */
     public function addFact(Fact $fact)
     {
-        $this->facts[] = $fact;
+        $this->facts[$fact->getName()] = $fact;
     }
 
     /**
@@ -75,5 +75,20 @@ class KnowledgeBase
     public function getRules()
     {
         return $this->rules;
+    }
+
+    /**
+     * @param array $facts
+     */
+    public function setFactsArray($facts)
+    {
+        foreach ($facts as $name => $value) {
+            if (!isset($this->facts[$name])) {
+                $this->addFact(Fact::factory($name, $value));
+            } else {
+                $this->facts[$name]->setValue($value);
+            }
+        }
+
     }
 }
