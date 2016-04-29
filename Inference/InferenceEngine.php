@@ -23,7 +23,7 @@ class InferenceEngine
 {
 
     /**
-     * @var RuleExecutor
+     * @var RuleExecutorInterface
      */
     protected $ruleExecutor;
 
@@ -33,12 +33,12 @@ class InferenceEngine
     protected $conflictResolutionStrategy;
 
     /**
-     * @param RuleExecutor      $ruleExecutor
-     * @param StrategyInterface $conflictResolutionStrategy
+     * @param RuleExecutorInterface $ruleExecutor
+     * @param StrategyInterface     $conflictResolutionStrategy
      */
-    public function __construct(RuleExecutor $ruleExecutor = null, StrategyInterface $conflictResolutionStrategy = null)
+    public function __construct(RuleExecutorInterface $ruleExecutor = null, StrategyInterface $conflictResolutionStrategy = null)
     {
-        $this->ruleExecutor = $ruleExecutor ? : new RuleExecutor();
+        $this->ruleExecutor = $ruleExecutor ? : new NativePhpRuleExecutor();
         $this->conflictResolutionStrategy = $conflictResolutionStrategy ? : new RandomStrategy();
     }
 

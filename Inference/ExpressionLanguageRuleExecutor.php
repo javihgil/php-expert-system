@@ -16,9 +16,9 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 /**
- * Class RuleExecutor
+ * Class ExpressionLanguageRuleExecutor
  */
-class RuleExecutor
+class ExpressionLanguageRuleExecutor implements RuleExecutorInterface
 {
     /**
      * @var ExpressionLanguage

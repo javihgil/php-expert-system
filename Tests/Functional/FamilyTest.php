@@ -34,8 +34,8 @@ class FamilyTest extends AbstractFunctionalTestCase
         $this->engine = new InferenceEngine();
 
         $this->rules = [];
-        $this->rules['r1'] = Rule::factory('$1.parent == $2', '$2.children[] = $1;');
-        $this->rules['r2'] = Rule::factory('$1.parent == $2.parent', '$1.siblings[] = $2; $2.siblings[] = $1;');
+        $this->rules['r1'] = Rule::factory('$1.dad == $2', '$2.children[] = $1;');
+        $this->rules['r2'] = Rule::factory('$1.dad == $2.dad', '$1.siblings[] = $2; $2.siblings[] = $1;');
 
         $this->knowledgeBase = new KnowledgeBase();
         foreach ($this->rules as $rule) {
@@ -50,7 +50,7 @@ class FamilyTest extends AbstractFunctionalTestCase
     {
         $john = new \stdClass();
         $peter = new \stdClass();
-        $peter->parent = $john;
+        $peter->dad = $john;
 
         $this->knowledgeBase->addFact('john', $john);
         $this->knowledgeBase->addFact('peter', $peter);

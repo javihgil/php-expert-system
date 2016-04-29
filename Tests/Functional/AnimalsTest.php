@@ -2,6 +2,7 @@
 
 namespace Jhg\ExpertSystem\Tests\Functional;
 
+use Jhg\ExpertSystem\Inference\ExpressionLanguageRuleExecutor;
 use Jhg\ExpertSystem\Inference\InferenceEngine;
 use Jhg\ExpertSystem\Knowledge\KnowledgeBase;
 use Jhg\ExpertSystem\Knowledge\Rule;
@@ -31,7 +32,7 @@ class AnimalsTest extends AbstractFunctionalTestCase
      */
     public function setup()
     {
-        $this->engine = new InferenceEngine();
+        $this->engine = new InferenceEngine(new ExpressionLanguageRuleExecutor());
 
         $this->rules = [];
         $this->rules['r1'] = Rule::factory('animal == "bee"', '$sound = "buzz";');
