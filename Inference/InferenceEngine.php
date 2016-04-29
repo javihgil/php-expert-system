@@ -60,8 +60,13 @@ class InferenceEngine
                 break;
             }
 
-            // skip already executed rules and not condition verifying ones
-            if (!$workingMemory->isExecuted($rule) && $this->ruleExecutor->checkCondition($rule, $workingMemory->getAllFacts())) {
+            // skip already executed rules
+            if ($workingMemory->isExecuted($rule)) {
+                continue;
+            }
+
+            // skip if condition is not true
+            if ($this->ruleExecutor->checkCondition($rule, $workingMemory->getAllFacts())) {
                 $matchedRules[] = $rule;
             }
         }
@@ -71,11 +76,13 @@ class InferenceEngine
 
     /**
      * @param KnowledgeBase $knowledgeBase
+     *
+     * @return WorkingMemory
      */
     public function run(KnowledgeBase $knowledgeBase)
     {
         $workingMemory = new WorkingMemory();
-        $workingMemory->setFromFacts($knowledgeBase->getFacts());
+        $workingMemory->setFacts($knowledgeBase->getFacts());
 
         while (true) {
             // Get the rules that has matching conditions
@@ -100,6 +107,8 @@ class InferenceEngine
             }
         }
 
-        $knowledgeBase->setFactsArray($workingMemory->getAllFacts());
+        $knowledgeBase->setFacts($workingMemory->getAllFacts());
+
+        return $workingMemory;
     }
 }

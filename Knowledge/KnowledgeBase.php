@@ -17,7 +17,7 @@ namespace Jhg\ExpertSystem\Knowledge;
 class KnowledgeBase
 {
     /**
-     * @var Fact[]
+     * @var array[]
      */
     protected $facts;
 
@@ -27,30 +27,12 @@ class KnowledgeBase
     protected $rules;
 
     /**
-     * @param Fact|Rule $item
+     * @param string $name
+     * @param mixed  $value
      */
-    public function add($item)
+    public function addFact($name, $value)
     {
-        switch (get_class($item)) {
-            case 'Jhg\ExpertSystem\Knowledge\Fact':
-                $this->addFact($item);
-                break;
-
-            case 'Jhg\ExpertSystem\Knowledge\Rule':
-                $this->addRule($item);
-                break;
-
-            default:
-                throw new \RuntimeException('Invalid item');
-        }
-    }
-
-    /**
-     * @param Fact $fact
-     */
-    public function addFact(Fact $fact)
-    {
-        $this->facts[$fact->getName()] = $fact;
+        $this->facts[$name] = $value;
     }
 
     /**
@@ -62,7 +44,7 @@ class KnowledgeBase
     }
 
     /**
-     * @return Fact[]
+     * @return array[]
      */
     public function getFacts()
     {
@@ -80,15 +62,8 @@ class KnowledgeBase
     /**
      * @param array $facts
      */
-    public function setFactsArray($facts)
+    public function setFacts($facts)
     {
-        foreach ($facts as $name => $value) {
-            if (!isset($this->facts[$name])) {
-                $this->addFact(Fact::factory($name, $value));
-            } else {
-                $this->facts[$name]->setValue($value);
-            }
-        }
-
+        $this->facts = $facts;
     }
 }

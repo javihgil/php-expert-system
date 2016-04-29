@@ -11,7 +11,6 @@
 
 namespace Jhg\ExpertSystem\Inference;
 
-use Jhg\ExpertSystem\Knowledge\Fact;
 use Jhg\ExpertSystem\Knowledge\Rule;
 
 /**
@@ -20,19 +19,16 @@ use Jhg\ExpertSystem\Knowledge\Rule;
 class WorkingMemory
 {
     /**
-     * @var Fact[]
+     * @var array[]
      */
     protected $facts = [];
 
     /**
-     * @param Fact[] $facts
+     * @param array[] $facts
      */
-    public function setFromFacts($facts)
+    public function setFacts(array $facts)
     {
-        /** @var Fact $fact */
-        foreach ($facts as $fact) {
-            $this->setFact($fact->getName(), $fact->getValue());
-        }
+        $this->facts = $facts;
     }
 
     /**
@@ -44,26 +40,26 @@ class WorkingMemory
         $this->facts[$name] = $value;
     }
 
-    /**
-     * @param string $factName
-     *
-     * @return Fact
-     */
-    public function getFact($factName)
-    {
-        return $this->facts[$factName];
-    }
+//    /**
+//     * @param string $factName
+//     *
+//     * @return Fact
+//     */
+//    public function getFact($factName)
+//    {
+//        return $this->facts[$factName];
+//    }
+//
+//    /**
+//     * @param string $factName
+//     */
+//    public function unsetFact($factName)
+//    {
+//        unset($this->facts[$factName]);
+//    }
 
     /**
-     * @param string $factName
-     */
-    public function unsetFact($factName)
-    {
-        unset($this->facts[$factName]);
-    }
-
-    /**
-     * @param Fact[] $facts
+     * @param array $facts
      */
     public function setAllFacts($facts)
     {
@@ -71,7 +67,7 @@ class WorkingMemory
     }
 
     /**
-     * @return Fact[]
+     * @return array
      */
     public function getAllFacts()
     {
@@ -99,5 +95,13 @@ class WorkingMemory
     public function setExecuted(Rule $rule)
     {
         $this->executedRules[] = $rule;
+    }
+
+    /**
+     * @return \Jhg\ExpertSystem\Knowledge\Rule[]
+     */
+    public function getExecutedRules()
+    {
+        return $this->executedRules;
     }
 }

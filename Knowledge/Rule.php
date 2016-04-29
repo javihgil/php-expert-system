@@ -107,4 +107,24 @@ class Rule
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasConditionWildcards()
+    {
+        return (bool) preg_match('/\$[0-9]+/', $this->getCondition());
+    }
+
+    /**
+     * @return array
+     */
+    public function getConditionWildcards()
+    {
+        if (preg_match('/(\$[0-9]+)/', $this->getCondition(), $matches)) {
+            return array_unique($matches);
+        }
+
+        return [];
+    }
 }

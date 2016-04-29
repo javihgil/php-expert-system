@@ -11,7 +11,6 @@
 
 namespace Jhg\ExpertSystem\Inference;
 
-use Jhg\ExpertSystem\Knowledge\Fact;
 use Jhg\ExpertSystem\Knowledge\Rule;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
