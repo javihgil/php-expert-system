@@ -3,7 +3,6 @@
 namespace Jhg\ExpertSystem\Tests\Functional;
 
 use Jhg\ExpertSystem\Inference\WorkingMemory;
-use Jhg\ExpertSystem\Knowledge\Fact;
 use Jhg\ExpertSystem\Knowledge\Rule;
 
 /**
