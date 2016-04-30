@@ -58,5 +58,10 @@ class FamilyTest extends AbstractFunctionalTestCase
         $workingMemory = $this->engine->run($this->knowledgeBase);
 
         $facts = $this->knowledgeBase->getFacts();
+
+        echo "\n";
+        foreach ($facts as $name => $value) {
+            echo sprintf('%s: %s'."\n", $name, serialize($value));
+        }
     }
 }

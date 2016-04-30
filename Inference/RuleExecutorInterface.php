@@ -11,7 +11,7 @@
 
 namespace Jhg\ExpertSystem\Inference;
 
-use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Knowledge\RuleRunDecorator;
 
 /**
  * Interface RuleExecutorInterface
@@ -19,18 +19,18 @@ use Jhg\ExpertSystem\Knowledge\Rule;
 interface RuleExecutorInterface
 {
     /**
-     * @param Rule  $rule
-     * @param array $facts
+     * @param RuleRunDecorator $rule
+     * @param WorkingMemory    $workingMemory
      *
-     * @return bool|mixed
+     * @return bool
      */
-    public function checkCondition(Rule $rule, array $facts);
+    public function checkCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory);
 
     /**
-     * @param Rule  $rule
-     * @param array $facts
+     * @param RuleRunDecorator          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return array
      */
-    public function execute(Rule $rule, $facts);
+    public function execute(RuleRunDecorator $rule, WorkingMemory $workingMemory);
 }

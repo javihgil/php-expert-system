@@ -11,21 +11,23 @@
 
 namespace Jhg\ExpertSystem\Inference;
 
-use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Knowledge\RuleRunDecorator;
 
 /**
- * Class NativePhpRuleExecutor
+ * Class NativePhpRuleRunDecoratorExecutor
  */
-class NativePhpRuleExecutor implements RuleExecutorInterface
+class NativePhpRuleRunDecoratorExecutor implements RuleExecutorInterface
 {
     /**
-     * @param Rule  $rule
-     * @param array $facts
+     * @param RuleRunDecorator $rule
+     * @param WorkingMemory    $workingMemory
      *
-     * @return bool|mixed
+     * @return bool
      */
-    public function checkCondition(Rule $rule, array $facts)
+    protected function execCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory)
     {
+        $facts = $workingMemory->getAllFacts();
+
         /**
          * @param string $_action
          * @return array
@@ -34,23 +36,43 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
             extract($facts);
             unset($facts);
 
-            return eval($_action);
+            $_return = eval($_action);
+
+            return $_return;
         };
 
         $code = trim($rule->getCondition());
-        $code .= preg_match('/;$/i', $code) ? '' : ';';
+        $code = (preg_match('/^return /i', $code) ? '' : 'return '). $code;
+        $code = $code . (preg_match('/;$/i', $code) ? '' : ';');
 
         return $executor($code);
     }
 
     /**
-     * @param Rule  $rule
-     * @param array $facts
+     * @param RuleRunDecorator $rule
+     * @param WorkingMemory    $workingMemory
+     *
+     * @return bool|mixed
+     */
+    public function checkCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory)
+    {
+        if ($rule->hasConditionWildcards()) {
+
+        } else {
+            return $this->execCondition($rule, $workingMemory);
+        }
+    }
+
+    /**
+     * @param RuleRunDecorator $rule
+     * @param WorkingMemory    $workingMemory
      *
      * @return array
      */
-    public function execute(Rule $rule, $facts)
+    public function execute(RuleRunDecorator $rule, WorkingMemory $workingMemory)
     {
+        $facts = $workingMemory->getAllFacts();
+
         /**
          * @param string $_action
          * @return array
@@ -65,6 +87,9 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
             return get_defined_vars();
         };
 
-        return $executor($rule->getAction());
+        $code = trim($rule->getAction());
+        $code = $code . (preg_match('/;$/i', $code) ? '' : ';');
+
+        return $executor($code);
     }
 }

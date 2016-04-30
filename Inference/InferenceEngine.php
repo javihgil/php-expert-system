@@ -15,6 +15,7 @@ use Jhg\ExpertSystem\ConflictResolution\RandomStrategy;
 use Jhg\ExpertSystem\ConflictResolution\StrategyInterface;
 use Jhg\ExpertSystem\Knowledge\KnowledgeBase;
 use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Knowledge\RuleRunDecorator;
 
 /**
  * Class InferenceEngine
@@ -65,8 +66,10 @@ class InferenceEngine
                 continue;
             }
 
+            $rule = new RuleRunDecorator($rule, $workingMemory);
+
             // skip if condition is not true
-            if ($this->ruleExecutor->checkCondition($rule, $workingMemory->getAllFacts())) {
+            if ($this->ruleExecutor->checkCondition($rule, $workingMemory)) {
                 $matchedRules[] = $rule;
             }
         }
@@ -84,27 +87,11 @@ class InferenceEngine
         $workingMemory = new WorkingMemory();
         $workingMemory->setFacts($knowledgeBase->getFacts());
 
-        while (true) {
-            // Get the rules that has matching conditions
-            $matchedRules = $this->getMatchedRules($knowledgeBase, $workingMemory);
-
-            if (empty($matchedRules)) {
-                // No more rules?
-                break;
-            } else {
-                /** @var Rule $selectedRule */
-                if (sizeof($matchedRules) == 1) {
-                    // just one rule
-                    $selectedRule = $matchedRules[0];
-                } else {
-                    // there are multiple rules with same priority
-                    $selectedRule = $this->conflictResolutionStrategy->selectPreferredRule($matchedRules, $workingMemory);
-                }
-
-                $newFacts = $this->ruleExecutor->execute($selectedRule, $workingMemory->getAllFacts());
-                $workingMemory->setAllFacts($newFacts);
-                $workingMemory->setExecuted($selectedRule);
-            }
+        while ($matchedRules = $this->getMatchedRules($knowledgeBase, $workingMemory)) {
+            /** @var RuleRunDecorator $selectedRuleDecorator */
+            $selectedRuleDecorator = $this->conflictResolutionStrategy->selectPreferredRule($matchedRules, $workingMemory);
+            $workingMemory->setAllFacts($this->ruleExecutor->execute($selectedRuleDecorator, $workingMemory->getAllFacts()));
+            $workingMemory->setExecuted($selectedRuleDecorator->getRule());
         }
 
         $knowledgeBase->setFacts($workingMemory->getAllFacts());
