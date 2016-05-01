@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jhg\ExpertSystem\Inference;
+namespace Jhg\ExpertSystem\Rule;
 
-use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Inference\WorkingMemory;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
@@ -34,28 +34,30 @@ class ExpressionLanguageRuleExecutor implements RuleExecutorInterface
     }
 
     /**
-     * @param Rule  $rule
-     * @param array $facts
+     * @param RuleRunDecorator $rule
+     * @param WorkingMemory    $workingMemory
      *
-     * @return bool|mixed
+     * @return bool
      */
-    public function checkCondition(Rule $rule, array $facts)
+    public function checkCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory)
     {
         try {
-            return (bool) $this->expressionLanguage->evaluate($rule->getCondition(), $facts);
+            return (bool) $this->expressionLanguage->evaluate($rule->getCondition(), $workingMemory->getAllFacts());
         } catch (SyntaxError $e) {
             return false;
         }
     }
 
     /**
-     * @param Rule  $rule
-     * @param array $facts
+     * @param RuleRunDecorator $rule
+     * @param WorkingMemory    $workingMemory
      *
      * @return array
      */
-    public function execute(Rule $rule, $facts)
+    public function execute(RuleRunDecorator $rule, WorkingMemory $workingMemory)
     {
+        $facts = $workingMemory->getAllFacts();
+
         /**
          * @param string $_action
          * @return array

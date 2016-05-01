@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jhg\ExpertSystem\Inference;
+namespace Jhg\ExpertSystem\Rule;
 
-use Jhg\ExpertSystem\Knowledge\RuleRunDecorator;
+use Jhg\ExpertSystem\Inference\WorkingMemory;
 
 /**
  * Interface RuleExecutorInterface
@@ -27,8 +27,8 @@ interface RuleExecutorInterface
     public function checkCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory);
 
     /**
-     * @param RuleRunDecorator          $rule
-     * @param WorkingMemory $workingMemory
+     * @param RuleRunDecorator $rule
+     * @param WorkingMemory    $workingMemory
      *
      * @return array
      */

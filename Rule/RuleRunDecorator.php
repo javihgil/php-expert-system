@@ -1,6 +1,6 @@
 <?php
 
-namespace Jhg\ExpertSystem\Knowledge;
+namespace Jhg\ExpertSystem\Rule;
 
 use Jhg\ExpertSystem\Inference\WorkingMemory;
 

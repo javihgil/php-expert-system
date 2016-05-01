@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Jhg\ExpertSystem\Inference;
+namespace Jhg\ExpertSystem\Rule;
 
-use Jhg\ExpertSystem\Knowledge\RuleRunDecorator;
+use Jhg\ExpertSystem\Inference\WorkingMemory;
 
 /**
- * Class NativePhpRuleRunDecoratorExecutor
+ * Class NativePhpRuleExecutor
  */
-class NativePhpRuleRunDecoratorExecutor implements RuleExecutorInterface
+class NativePhpRuleExecutor implements RuleExecutorInterface
 {
     /**
      * @param RuleRunDecorator $rule

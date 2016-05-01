@@ -11,6 +11,8 @@
 
 namespace Jhg\ExpertSystem\Knowledge;
 
+use Jhg\ExpertSystem\Rule\Rule;
+
 /**
  * Class KnowledgeBase
  */

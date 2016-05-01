@@ -4,7 +4,7 @@ namespace Jhg\ExpertSystem\Tests\Functional;
 
 use Jhg\ExpertSystem\Inference\InferenceEngine;
 use Jhg\ExpertSystem\Knowledge\KnowledgeBase;
-use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Rule\Rule;
 
 /**
  * Class FamilyTest

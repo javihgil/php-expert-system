@@ -14,8 +14,10 @@ namespace Jhg\ExpertSystem\Inference;
 use Jhg\ExpertSystem\ConflictResolution\RandomStrategy;
 use Jhg\ExpertSystem\ConflictResolution\StrategyInterface;
 use Jhg\ExpertSystem\Knowledge\KnowledgeBase;
-use Jhg\ExpertSystem\Knowledge\Rule;
-use Jhg\ExpertSystem\Knowledge\RuleRunDecorator;
+use Jhg\ExpertSystem\Rule\NativePhpRuleExecutor;
+use Jhg\ExpertSystem\Rule\Rule;
+use Jhg\ExpertSystem\Rule\RuleExecutorInterface;
+use Jhg\ExpertSystem\Rule\RuleRunDecorator;
 
 /**
  * Class InferenceEngine
@@ -47,11 +49,11 @@ class InferenceEngine
      * @param KnowledgeBase $knowledgeBase
      * @param WorkingMemory $workingMemory
      *
-     * @return Rule[]
+     * @return RuleRunDecorator[]
      */
     protected function getMatchedRules(KnowledgeBase $knowledgeBase, WorkingMemory $workingMemory)
     {
-        /** @var Rule[] $matchedRules */
+        /** @var RuleRunDecorator[] $matchedRules */
         $matchedRules = [];
 
         /** @var Rule $rule */
@@ -90,7 +92,7 @@ class InferenceEngine
         while ($matchedRules = $this->getMatchedRules($knowledgeBase, $workingMemory)) {
             /** @var RuleRunDecorator $selectedRuleDecorator */
             $selectedRuleDecorator = $this->conflictResolutionStrategy->selectPreferredRule($matchedRules, $workingMemory);
-            $workingMemory->setAllFacts($this->ruleExecutor->execute($selectedRuleDecorator, $workingMemory->getAllFacts()));
+            $workingMemory->setAllFacts($this->ruleExecutor->execute($selectedRuleDecorator, $workingMemory));
             $workingMemory->setExecuted($selectedRuleDecorator->getRule());
         }
 

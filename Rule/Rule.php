@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jhg\ExpertSystem\Knowledge;
+namespace Jhg\ExpertSystem\Rule;
 
 /**
  * Class Rule

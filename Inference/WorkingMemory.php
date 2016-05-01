@@ -11,7 +11,7 @@
 
 namespace Jhg\ExpertSystem\Inference;
 
-use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Rule\Rule;
 
 /**
  * Class WorkingMemory
