@@ -21,12 +21,12 @@ class KnowledgeBase
     /**
      * @var array[]
      */
-    protected $facts;
+    protected $facts = [];
 
     /**
      * @var Rule[]
      */
-    protected $rules;
+    protected $rules = [];
 
     /**
      * @param string $name

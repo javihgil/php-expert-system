@@ -12,7 +12,7 @@
 namespace Jhg\ExpertSystem\ConflictResolution;
 
 use Jhg\ExpertSystem\Inference\WorkingMemory;
-use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Rule\Rule;
 
 /**
  * Class RandomStrategy
