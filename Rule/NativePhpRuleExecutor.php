@@ -19,12 +19,12 @@ use Jhg\ExpertSystem\Inference\WorkingMemory;
 class NativePhpRuleExecutor implements RuleExecutorInterface
 {
     /**
-     * @param RuleRunDecorator $rule
-     * @param WorkingMemory    $workingMemory
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return bool
      */
-    protected function execCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory)
+    private function execCondition(Rule $rule, WorkingMemory $workingMemory)
     {
         $facts = $workingMemory->getAllFacts();
 
@@ -49,27 +49,33 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
     }
 
     /**
-     * @param RuleRunDecorator $rule
-     * @param WorkingMemory    $workingMemory
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return bool|mixed
      */
-    public function checkCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory)
+    public function checkCondition(Rule $rule, WorkingMemory $workingMemory)
     {
-        if ($rule->hasConditionWildcards()) {
+        if ($rule instanceof RuleRunDecorator && $rule->hasConditionWildcards()) {
+            foreach ($rule->getWildcardCombinationRules() as $combinationRule) {
+                if ($this->execCondition($combinationRule, $workingMemory)) {
+                    $rule->addSuccessCombinationRule($combinationRule);
+                }
+            }
 
+            return $rule->hasSuccessCombinationRules();
         } else {
             return $this->execCondition($rule, $workingMemory);
         }
     }
 
     /**
-     * @param RuleRunDecorator $rule
-     * @param WorkingMemory    $workingMemory
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return array
      */
-    public function execute(RuleRunDecorator $rule, WorkingMemory $workingMemory)
+    private function execAction(Rule $rule, WorkingMemory $workingMemory)
     {
         $facts = $workingMemory->getAllFacts();
 
@@ -91,5 +97,25 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
         $code = $code . (preg_match('/;$/i', $code) ? '' : ';');
 
         return $executor($code);
+    }
+
+    /**
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
+     *
+     * @return array
+     */
+    public function execute(Rule $rule, WorkingMemory $workingMemory)
+    {
+        if ($rule instanceof RuleRunDecorator && $rule->hasSuccessCombinationRules()) {
+            $workingMemory->setExecuted($rule->getRule());
+            foreach ($rule->getSuccessCombinationRules() as $combinationRule) {
+                $workingMemory->setAllFacts($this->execAction($combinationRule, $workingMemory));
+                $workingMemory->setExecuted($combinationRule);
+            }
+        } else {
+            $workingMemory->setAllFacts($this->execAction($rule, $workingMemory));
+            $workingMemory->setExecuted($rule->getRule());
+        }
     }
 }

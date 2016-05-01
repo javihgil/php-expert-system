@@ -34,12 +34,12 @@ class ExpressionLanguageRuleExecutor implements RuleExecutorInterface
     }
 
     /**
-     * @param RuleRunDecorator $rule
-     * @param WorkingMemory    $workingMemory
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return bool
      */
-    public function checkCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory)
+    public function checkCondition(Rule $rule, WorkingMemory $workingMemory)
     {
         try {
             return (bool) $this->expressionLanguage->evaluate($rule->getCondition(), $workingMemory->getAllFacts());
@@ -49,12 +49,12 @@ class ExpressionLanguageRuleExecutor implements RuleExecutorInterface
     }
 
     /**
-     * @param RuleRunDecorator $rule
-     * @param WorkingMemory    $workingMemory
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return array
      */
-    public function execute(RuleRunDecorator $rule, WorkingMemory $workingMemory)
+    public function execute(Rule $rule, WorkingMemory $workingMemory)
     {
         $facts = $workingMemory->getAllFacts();
 
@@ -71,7 +71,8 @@ class ExpressionLanguageRuleExecutor implements RuleExecutorInterface
 
             return get_defined_vars();
         };
-
-        return $executor($rule->getAction());
+        
+        $workingMemory->setAllFacts($executor($rule->getAction()));
+        $workingMemory->setExecuted($rule->getRule());
     }
 }

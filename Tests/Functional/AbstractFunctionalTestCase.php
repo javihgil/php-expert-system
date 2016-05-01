@@ -3,7 +3,7 @@
 namespace Jhg\ExpertSystem\Tests\Functional;
 
 use Jhg\ExpertSystem\Inference\WorkingMemory;
-use Jhg\ExpertSystem\Knowledge\Rule;
+use Jhg\ExpertSystem\Rule\Rule;
 
 /**
  * Class AbstractFunctionalTestCase
@@ -15,7 +15,7 @@ abstract class AbstractFunctionalTestCase extends \PHPUnit_Framework_TestCase
      * @param string $expectedValue
      * @param Fact[] $facts
      */
-    protected function assertFact($expectedName, $expectedValue, array $facts)
+    protected function assertSimpleFact($expectedName, $expectedValue, array $facts)
     {
         foreach ($facts as $name => $value) {
             if ($name == $expectedName) {

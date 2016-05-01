@@ -87,11 +87,11 @@ class AnimalsTest extends AbstractFunctionalTestCase
 
         $facts = $this->knowledgeBase->getFacts();
 
-        $this->assertFact('fly', $flyValue, $facts);
-        $this->assertFact('size', $sizeValue, $facts);
-        $this->assertFact('legs', $legsValue, $facts);
-        $this->assertFact('animal', $expectedAnimal, $facts);
-        $this->assertFact('sound', $expectedSound, $facts);
+        $this->assertSimpleFact('fly', $flyValue, $facts);
+        $this->assertSimpleFact('size', $sizeValue, $facts);
+        $this->assertSimpleFact('legs', $legsValue, $facts);
+        $this->assertSimpleFact('animal', $expectedAnimal, $facts);
+        $this->assertSimpleFact('sound', $expectedSound, $facts);
 
         $expectedRulesObjects = [];
         foreach ($expectedRules as $expectedRuleKey) {

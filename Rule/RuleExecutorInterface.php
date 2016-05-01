@@ -19,18 +19,18 @@ use Jhg\ExpertSystem\Inference\WorkingMemory;
 interface RuleExecutorInterface
 {
     /**
-     * @param RuleRunDecorator $rule
-     * @param WorkingMemory    $workingMemory
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return bool
      */
-    public function checkCondition(RuleRunDecorator $rule, WorkingMemory $workingMemory);
+    public function checkCondition(Rule $rule, WorkingMemory $workingMemory);
 
     /**
-     * @param RuleRunDecorator $rule
-     * @param WorkingMemory    $workingMemory
+     * @param Rule          $rule
+     * @param WorkingMemory $workingMemory
      *
      * @return array
      */
-    public function execute(RuleRunDecorator $rule, WorkingMemory $workingMemory);
+    public function execute(Rule $rule, WorkingMemory $workingMemory);
 }

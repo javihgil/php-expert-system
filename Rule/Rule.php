@@ -113,7 +113,7 @@ class Rule
      */
     public function hasConditionWildcards()
     {
-        return (bool) preg_match('/\$[0-9]+/', $this->getCondition());
+        return (bool) preg_match('/\$[0-9]+/i', $this->getCondition());
     }
 
     /**
@@ -121,8 +121,8 @@ class Rule
      */
     public function getConditionWildcards()
     {
-        if (preg_match('/(\$[0-9]+)/', $this->getCondition(), $matches)) {
-            return array_unique($matches);
+        if (preg_match_all('/\$[0-9]+/i', $this->getCondition(), $matches)) {
+            return array_unique($matches[0]);
         }
 
         return [];

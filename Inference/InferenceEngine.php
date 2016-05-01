@@ -92,8 +92,7 @@ class InferenceEngine
         while ($matchedRules = $this->getMatchedRules($knowledgeBase, $workingMemory)) {
             /** @var RuleRunDecorator $selectedRuleDecorator */
             $selectedRuleDecorator = $this->conflictResolutionStrategy->selectPreferredRule($matchedRules, $workingMemory);
-            $workingMemory->setAllFacts($this->ruleExecutor->execute($selectedRuleDecorator, $workingMemory));
-            $workingMemory->setExecuted($selectedRuleDecorator->getRule());
+            $this->ruleExecutor->execute($selectedRuleDecorator, $workingMemory);
         }
 
         $knowledgeBase->setFacts($workingMemory->getAllFacts());
