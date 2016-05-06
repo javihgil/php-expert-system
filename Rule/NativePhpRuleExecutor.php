@@ -57,7 +57,13 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
     public function checkCondition(Rule $rule, WorkingMemory $workingMemory)
     {
         if ($rule instanceof RuleRunDecorator && $rule->hasConditionWildcards()) {
-            foreach ($rule->getWildcardCombinationRules() as $combinationRule) {
+            $combinations = $rule->getWildcardCombinationRules();
+
+            if (!$combinations) {
+                return false;
+            }
+
+            foreach ($combinations as $combinationRule) {
                 if ($this->execCondition($combinationRule, $workingMemory)) {
                     $rule->addSuccessCombinationRule($combinationRule);
                 }
