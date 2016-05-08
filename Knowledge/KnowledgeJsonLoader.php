@@ -67,7 +67,7 @@ class KnowledgeJsonLoader implements KnowledgeLoaderInterface
                 $priority = isset($data['priority']) ? $data['priority'] : 0;
             }
 
-            $knowledgeBase->add(Rule::factory($condition, $action, $priority));
+            $knowledgeBase->add(Rule::factory($condition, $condition, $action, $priority));
         }
     }
 }

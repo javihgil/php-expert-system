@@ -11,14 +11,29 @@
 
 namespace Jhg\ExpertSystem\ConflictResolution;
 
+use Jhg\ExpertSystem\Inference\InferenceProfiler;
+use Jhg\ExpertSystem\Inference\InferenceProfilerAwareInterface;
 use Jhg\ExpertSystem\Inference\WorkingMemory;
 use Jhg\ExpertSystem\Rule\Rule;
 
 /**
  * Class RandomStrategy
  */
-class RandomStrategy implements StrategyInterface
+class RandomStrategy implements StrategyInterface, InferenceProfilerAwareInterface
 {
+    /**
+     * @var InferenceProfiler
+     */
+    protected $inferenceProfiler;
+
+    /**
+     * @param InferenceProfiler $inferenceProfiler
+     */
+    public function setInferenceProfiler(InferenceProfiler $inferenceProfiler)
+    {
+        $this->inferenceProfiler = $inferenceProfiler;
+    }
+
     /**
      * @param Rule[]        $rules
      * @param WorkingMemory $workingMemory
@@ -29,6 +44,10 @@ class RandomStrategy implements StrategyInterface
     {
         $random = rand(0, sizeof($rules) - 1); // Calculate a random number
 
-        return $rules[$random];
+        $selectedRule = $rules[$random];
+        
+        $this->inferenceProfiler && $this->inferenceProfiler->setIterationSelectedRule($selectedRule, 'Rule selected randomly');
+        
+        return $selectedRule;
     }
 }

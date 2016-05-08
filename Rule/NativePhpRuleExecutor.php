@@ -11,13 +11,28 @@
 
 namespace Jhg\ExpertSystem\Rule;
 
+use Jhg\ExpertSystem\Inference\InferenceProfiler;
+use Jhg\ExpertSystem\Inference\InferenceProfilerAwareInterface;
 use Jhg\ExpertSystem\Inference\WorkingMemory;
 
 /**
  * Class NativePhpRuleExecutor
  */
-class NativePhpRuleExecutor implements RuleExecutorInterface
+class NativePhpRuleExecutor implements RuleExecutorInterface, InferenceProfilerAwareInterface
 {
+    /**
+     * @var InferenceProfiler
+     */
+    protected $inferenceProfiler;
+
+    /**
+     * @param InferenceProfiler $inferenceProfiler
+     */
+    public function setInferenceProfiler(InferenceProfiler $inferenceProfiler)
+    {
+        $this->inferenceProfiler = $inferenceProfiler;
+    }
+
     /**
      * @param Rule          $rule
      * @param WorkingMemory $workingMemory
@@ -57,6 +72,8 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
     public function checkCondition(Rule $rule, WorkingMemory $workingMemory)
     {
         if ($rule instanceof RuleRunDecorator && $rule->hasConditionWildcards()) {
+            $this->inferenceProfiler && $this->inferenceProfiler->setMatchingRuleCheckConditionWildcard();
+
             $combinations = $rule->getWildcardCombinationRules();
 
             if (!$combinations) {
@@ -64,8 +81,12 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
             }
 
             foreach ($combinations as $combinationRule) {
+                $this->inferenceProfiler && $this->inferenceProfiler->addMatchingRuleCheckConditionWildcardCombinationCheck($combinationRule);
+
                 if ($this->execCondition($combinationRule, $workingMemory)) {
                     $rule->addSuccessCombinationRule($combinationRule);
+
+                    $this->inferenceProfiler && $this->inferenceProfiler->setMatchingRuleCheckConditionWildcardCombinationCheckSuccess();
                 }
             }
 
@@ -116,10 +137,13 @@ class NativePhpRuleExecutor implements RuleExecutorInterface
         if ($rule instanceof RuleRunDecorator && $rule->hasSuccessCombinationRules()) {
             $workingMemory->setExecuted($rule->getRule());
             foreach ($rule->getSuccessCombinationRules() as $combinationRule) {
+                $this->inferenceProfiler && $this->inferenceProfiler->addIterationRuleExecution($combinationRule);
+
                 $workingMemory->setAllFacts($this->execAction($combinationRule, $workingMemory));
                 $workingMemory->setExecuted($combinationRule);
             }
         } else {
+            $this->inferenceProfiler && $this->inferenceProfiler->addIterationRuleExecution($rule);
             $workingMemory->setAllFacts($this->execAction($rule, $workingMemory));
             $workingMemory->setExecuted($rule->getRule());
         }

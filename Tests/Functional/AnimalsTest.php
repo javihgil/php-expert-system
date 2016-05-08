@@ -35,14 +35,14 @@ class AnimalsTest extends AbstractFunctionalTestCase
         $this->engine = new InferenceEngine(new ExpressionLanguageRuleExecutor());
 
         $this->rules = [];
-        $this->rules['r1'] = Rule::factory('animal == "bee"', '$sound = "buzz";');
-        $this->rules['r2'] = Rule::factory('animal == "bird"', '$sound = "tweet";');
-        $this->rules['r3'] = Rule::factory('animal == "hen"', '$sound = "cluck";');
-        $this->rules['r4'] = Rule::factory('animal == "rat"', '$sound = "squeak";');
-        $this->rules['r5'] = Rule::factory('fly and size == "small"', '$animal = "bee";');
-        $this->rules['r6'] = Rule::factory('fly and size == "large" and legs==2', '$animal = "bird";');
-        $this->rules['r7'] = Rule::factory('legs==4', '$animal = "rat";');
-        $this->rules['r8'] = Rule::factory('not fly and legs==2', '$animal = "hen";');
+        $this->rules['r1'] = Rule::factory('r1', 'animal == "bee"', '$sound = "buzz";');
+        $this->rules['r2'] = Rule::factory('r2', 'animal == "bird"', '$sound = "tweet";');
+        $this->rules['r3'] = Rule::factory('r3', 'animal == "hen"', '$sound = "cluck";');
+        $this->rules['r4'] = Rule::factory('r4', 'animal == "rat"', '$sound = "squeak";');
+        $this->rules['r5'] = Rule::factory('r5', 'fly and size == "small"', '$animal = "bee";');
+        $this->rules['r6'] = Rule::factory('r6', 'fly and size == "large" and legs==2', '$animal = "bird";');
+        $this->rules['r7'] = Rule::factory('r7', 'legs==4', '$animal = "rat";');
+        $this->rules['r8'] = Rule::factory('r8', 'not fly and legs==2', '$animal = "hen";');
 
         $this->knowledgeBase = new KnowledgeBase();
         foreach ($this->rules as $rule) {

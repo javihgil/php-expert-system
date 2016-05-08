@@ -46,6 +46,22 @@ class RuleRunDecorator extends Rule
     /**
      * @return string
      */
+    public function getName()
+    {
+        return $this->rule->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->rule->getDescription();
+    }
+
+    /**
+     * @return string
+     */
     public function getCondition()
     {
         return $this->rule->getCondition();
@@ -103,10 +119,10 @@ class RuleRunDecorator extends Rule
 
         $combinations = $this->combinations($this->workingMemory->getAllFacts(), sizeof($wildCards));
 
-        foreach ($combinations as $combination) {
+        foreach ($combinations as $i => $combination) {
             $proccesedCondition = $this->parseCode($this->getCondition(), $this->getConditionWildcards(), $combination);
             $proccesedAction = $this->parseCode($this->getAction(), $this->getConditionWildcards(), $combination);
-            $rule = Rule::factory($proccesedCondition, $proccesedAction, $this->getPriority());
+            $rule = Rule::factory($this->getName().'__'.$i, $proccesedCondition, $proccesedAction, $this->getPriority());
 
             $this->wildcardCombinationRules[] = $rule;
         }

@@ -19,6 +19,16 @@ class Rule
     /**
      * @var string
      */
+    protected $name;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var string
+     */
     protected $condition;
 
     /**
@@ -32,20 +42,64 @@ class Rule
     protected $priority;
 
     /**
+     * @param string $name
      * @param string $condition
      * @param string $action
      * @param int    $priority
+     * @param string $description
      *
      * @return Rule
      */
-    public static function factory($condition, $action, $priority = 0)
+    public static function factory($name, $condition, $action, $priority = 0, $description = '')
     {
         $rule = new self();
+        $rule->setName($name);
         $rule->setCondition($condition);
         $rule->setAction($action);
         $rule->setPriority($priority);
+        $rule->setDescription($description);
 
         return $rule;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     /**
